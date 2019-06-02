@@ -30,11 +30,18 @@ import javax.swing.border.BevelBorder;
 import java.awt.Font;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseMotionAdapter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.swing.SwingConstants;
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtProjectName;
+	private ListForm createList;
+	private Board projectBoard;
 	/**
 	 * Launch the application.
 	 */
@@ -56,78 +63,25 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		setExtendedState(MAXIMIZED_BOTH); // Launch to fullscreen
+		
+		
+		
+		//setExtendedState(MAXIMIZED_BOTH); // Launch to fullscreen
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 511, 339);
 		contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("Button.shadow"));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//contentPane.setBackground(Color.LIGHT_GRAY);
+		//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[::400px,grow]10[200px:n,grow]", "[:50px:50px,grow][300px,grow]"));
+		contentPane.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-        Calendar c = Calendar.getInstance();
-        
-        // Current time
-		JLabel lblNewLabel = new JLabel(c.getTime().toString());
-		contentPane.add(lblNewLabel, "cell 0 0 2 1");
-		
-		// Create project list
-		ProjectList list = new ProjectList("My Projects");
-		contentPane.add(list, "flowx,cell 1 1,grow");
-		
-		// Set max time available for projects in the list
-		list.setMaxTimeAvailable(8);
-		
-		Dimension maxDims = new Dimension(500, 250);
-		
-		// Add New Project Panel
-		JPanel panel = new JPanel();		
-		panel.setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow]", "[][][grow][][][][grow][]"));
-		
-		JLabel lblCreateNewProject = new JLabel("Create New Project");
-		lblCreateNewProject.setFont(new Font("Dialog", Font.BOLD, 20));
-		panel.add(lblCreateNewProject, "cell 0 0 5 1");
-		
-		JLabel lblName = new JLabel("Name:");
-		panel.add(lblName, "cell 0 1,alignx right");
-		
-		txtProjectName = new JTextField();
-		panel.add(txtProjectName, "cell 1 1 4 1,growx");
-		txtProjectName.setColumns(10);
-		
-		contentPane.add(panel, "cell 0 1,grow");
-		
-		JButton btnNewButton = new JButton("Submit");
-		btnNewButton.addActionListener(list);
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ProjectCard newProject = new ProjectCard(txtProjectName.getText(), list);
-				list.addProject(newProject);
-			}
-		});
-		panel.add(btnNewButton, "cell 4 7,alignx left");
-		
-		/*
-		// Move projectcard down 
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ProjectCard temp = projectList.removeFirst();
-				projectList.addLast(temp);
-				int i = 0;
-				while(i < projectList.size()) {
-					panel_2.add(projectList.get(i), "wrap");
-					
-					panel_2.revalidate();
-					
-					i++;
-				}
-			}
-		});
-		contentPane.add(btnNewButton_1, "cell 0 2");
-		*/
+		// Create Project Board
+		projectBoard = new Board();
+		contentPane.add(projectBoard, "cell 0 0,grow");
+		// Pass instance of Project Board to itself for access from interior objects
+		projectBoard.setInstance(projectBoard);
 	}
+	
+	
 
 }
