@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
 		
 		
 		
-		//setExtendedState(MAXIMIZED_BOTH); // Launch to fullscreen
+		setExtendedState(MAXIMIZED_BOTH); // Launch to fullscreen
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 511, 339);
 		contentPane = new JPanel();

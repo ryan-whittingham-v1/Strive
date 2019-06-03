@@ -47,6 +47,7 @@ public class CountdownTimer extends JPanel implements Runnable {
 		add(clockLbl, "cell 0 0");
 	}
 	
+	
 	// Get hours till due date
 		public int getHoursTillDue() {
 			
@@ -66,31 +67,6 @@ public class CountdownTimer extends JPanel implements Runnable {
 			return (diffHours);
 			
 		}
-	
-	/*
-	// Get total time till due Date
-	public String getTimeAvailable() {
-		
-		calendarCurrent = Calendar.getInstance(); // update current time
-		
-		// Assign currentDate to date object
-		currentDate = calendarCurrent.getTime();
-					
-		// Calculate time available
-		timeAvailable = dueDate.getTime() - currentDate.getTime();
-
-		// Convert to proper time intervals
-		long diffSeconds = timeAvailable / 1000 % 60;
-		long diffMinutes = timeAvailable / (60 * 1000) % 60;
-		long diffHours = timeAvailable / (60 * 60 * 1000) % 24;
-		long diffDays = timeAvailable / (24 * 60 * 60 * 1000);
-						
-		String answer = (Long.toString(diffDays) + " days, " + Long.toString(diffHours) + " hours, "
-			+ Long.toString(diffMinutes) + " minutes, " + Long.toString(diffSeconds));
-		
-		return answer;
-	}
-	*/
 		
 	// Turn on Countdown timer
 	public void run() {

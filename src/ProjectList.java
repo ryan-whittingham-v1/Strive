@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -18,8 +20,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 
-public class ProjectList extends JPanel implements ActionListener{
+public class ProjectList extends JPanel {
 	private LinkedList<ProjectCard> list;
 	private JPanel scrollViewPort;
 	private String name;
@@ -42,11 +45,24 @@ public class ProjectList extends JPanel implements ActionListener{
 	private JLabel lblAvailability;
 	private JLabel lblTotalProjectHours;
 	private JLabel totalProjectHoursLbl;
+	private JButton btnUpdateScheduleStatus;
+	private JLabel lblLastUpdate;
+	private JLabel lastUpdateLbl;
+	private SimpleDateFormat dateToStringFormat;
+	Calendar calendarCurrent;
+	Date currentDate;
 	
-	// Constructor to create new linked list
+	
+	// Constructor
 	public ProjectList() {
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deselectProjects();
+			}
+		});
 		totalProjectHours = 0;
-		this.setLayout(new MigLayout("", "[::75px,grow][grow][grow][grow][grow][grow][grow][grow][::75px,grow]", "[25px:25px:25px][25px:25px:25px,grow][grow][grow][grow][grow][]"));
+		this.setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]", "[25px:25px:25px][25px:25px:25px,grow][::50px,grow][::20px,grow][::80px,grow][::20px,grow][grow][::50px,grow][::25px,grow]"));
 		this.setBackground(Color.green);
 		
 		// Create Linked list for project cards
@@ -55,17 +71,17 @@ public class ProjectList extends JPanel implements ActionListener{
 		// Name 
 		nameLbl = new JLabel("List Name");
 		nameLbl.setFont(new Font("Dialog", Font.BOLD, 26));
-		add(nameLbl, "cell 0 0 4 1");
+		add(nameLbl, "cell 1 1 2 1");
 		
 		// Availablity Header
-		lblAvailability = new JLabel("Time Commitment");
+		lblAvailability = new JLabel("Time Available");
 		lblAvailability.setFont(new Font("Dialog", Font.BOLD, 22));
-		add(lblAvailability, "cell 1 2,aligny bottom");
+		add(lblAvailability, "cell 1 2 2 1,alignx left,aligny bottom");
 		
 		// Scrollpane for the list
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		add(scrollPane, "cell 5 2 3 4,grow");
+		add(scrollPane, "cell 3 2 3 5,grow");
 		scrollViewPort = new JPanel();
 		scrollViewPort.addMouseListener(new MouseAdapter() {
 			@Override
@@ -75,6 +91,29 @@ public class ProjectList extends JPanel implements ActionListener{
 		});
 		scrollPane.setViewportView(scrollViewPort);
 		scrollViewPort.setLayout(new MigLayout("", "[grow,center]", "[grow]"));
+		
+		lblDaysPerWeek = new JLabel("Days Per Week:");
+		add(lblDaysPerWeek, "cell 1 3,alignx right,aligny bottom");
+		
+		daysPerWeekLbl = new JLabel("5");
+		add(daysPerWeekLbl, "cell 2 3,aligny bottom");
+		
+		lblHoursPerDay = new JLabel("Hours Per Day :");
+		add(lblHoursPerDay, "cell 1 4,alignx right,aligny top");
+		
+		hoursPerDayLbl = new JLabel("8");
+		add(hoursPerDayLbl, "cell 2 4,aligny top");
+		
+		lblTotalProjectHours = new JLabel("Total Project Hours:");
+		add(lblTotalProjectHours, "cell 1 5,alignx right");
+		
+		totalProjectHoursLbl = new JLabel(Integer.toString(totalProjectHours));
+		add(totalProjectHoursLbl, "cell 2 5");
+		
+		// Calendar to get current date
+		dateToStringFormat = new SimpleDateFormat("MM/dd/yyyy");  // Format for date to string conversion
+		calendarCurrent = Calendar.getInstance(); // update current time
+		
 		
 		// Create Project button
 		btnNewProject = new JButton("Create Project");
@@ -87,24 +126,24 @@ public class ProjectList extends JPanel implements ActionListener{
 			}
 		});
 		
-		lblDaysPerWeek = new JLabel("Days Per Week:");
-		add(lblDaysPerWeek, "cell 1 3,aligny bottom");
+		// Update schedule status button
+		btnUpdateScheduleStatus = new JButton("Update Status");
+		btnUpdateScheduleStatus.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				updateCards();
+				calendarCurrent = Calendar.getInstance(); // update current time
+				lastUpdateLbl.setText(calendarCurrent.getTime().toString()); // update current time);
+			}
+		});
 		
-		daysPerWeekLbl = new JLabel("5");
-		add(daysPerWeekLbl, "cell 2 3,aligny bottom");
+		lblLastUpdate = new JLabel("Last Update:");
+		add(lblLastUpdate, "cell 1 6,alignx right,aligny bottom");
 		
-		lblHoursPerDay = new JLabel("Hours Per Day :");
-		add(lblHoursPerDay, "cell 1 4,aligny top");
-		
-		hoursPerDayLbl = new JLabel("8");
-		add(hoursPerDayLbl, "cell 2 4,aligny top");
-		
-		lblTotalProjectHours = new JLabel("Total Project Hours:");
-		add(lblTotalProjectHours, "cell 1 5");
-		
-		totalProjectHoursLbl = new JLabel(Integer.toString(totalProjectHours));
-		add(totalProjectHoursLbl, "cell 2 5");
-		add(btnNewProject, "cell 7 6,alignx right");
+		lastUpdateLbl = new JLabel("n/a");
+		add(lastUpdateLbl, "cell 2 6,alignx left,aligny bottom");
+		add(btnUpdateScheduleStatus, "cell 1 7 2 1,alignx center");
+		add(btnNewProject, "cell 4 7,alignx center");
 		
 		// Create a CreateProject custom jpanel for adding to the list with button click
 		createProject = new ProjectForm();
@@ -156,16 +195,10 @@ public class ProjectList extends JPanel implements ActionListener{
 		}
 		totalProjectHours = total;
 		totalProjectHoursLbl.setText(Integer.toString(total));
+		calendarCurrent = Calendar.getInstance(); // update current time
+		lastUpdateLbl.setText(calendarCurrent.getTime().toString()); // update current time);
 		return total;
 	}
-	
-	// Get all projects time total
-	//public int updateTimeAvailable() {
-		//	int total = 0;
-			//total = maxTimeAvailable - updateTimeTotal();
-			//timeAvailableLbl.setText(Integer.toString(total));
-			//return total;
-		//}
 	
 	public String getName() {
 		return name;
@@ -194,17 +227,6 @@ public class ProjectList extends JPanel implements ActionListener{
 		daysPerWeekLbl.setText(daysPerWeek);
 	}
 
-	// Check if time available in the list
-	//public void checkTimeAvailable() {
-		//if (updateTimeTotal() > maxTimeAvailable) {
-		//	this.setBackground(Color.red);
-		//}
-		//else {
-			//this.setBackground(Color.green);
-
-	//	}
-	//}
-
 	public int getHoursPerWeek() {
 		hoursPerWeek = hoursPerDay * daysPerWeek;
 		return hoursPerWeek;
@@ -221,14 +243,6 @@ public class ProjectList extends JPanel implements ActionListener{
 	public void setTotalProjectHours(int totalProjectHours) {
 		this.totalProjectHours = totalProjectHours;
 	}
-
-	// Actionlistener test
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Delete this project" + e.getSource());
-		
-	}
 	
 	// Select project
 	public void selectProject(ProjectCard selectedProject) {
@@ -239,7 +253,7 @@ public class ProjectList extends JPanel implements ActionListener{
 			list.get(i).hideOptions();
 			i++;
 		}
-		selectedProject.setBackground(Color.blue);
+		selectedProject.setBackground(Color.YELLOW);
 		selectedProject.showOptions();
 	}
 	
@@ -313,6 +327,7 @@ public class ProjectList extends JPanel implements ActionListener{
 		}
 	//	updateTimeAvailable();
 		updateTimeTotal();
+		updateCards();
 		//checkTimeAvailable();
 		refresh();
 	}
@@ -328,6 +343,7 @@ public class ProjectList extends JPanel implements ActionListener{
 		totalProjectHours = 0;
 		int i = 0;
 		while(i < list.size()) {
+			list.get(i).setOnSchedule(true);
 			list.get(i).refresh();
 			totalProjectHours = totalProjectHours + list.get(i).getDuration();
 			i++;

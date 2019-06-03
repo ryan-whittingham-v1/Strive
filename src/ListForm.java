@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import java.awt.Font;
 
 public class ListForm extends JPanel {
 	
@@ -21,20 +22,24 @@ public class ListForm extends JPanel {
 		setBackground(UIManager.getColor("Button.focus"));
 		setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]", "[grow][::25px,grow][::25px,grow][grow][grow][grow][grow][grow]"));
 		
-		JLabel nameLbl = new JLabel("Name:");
+		JLabel nameLbl = new JLabel("List Name:");
+		nameLbl.setFont(new Font("Dialog", Font.BOLD, 18));
 		add(nameLbl, "cell 1 1,alignx right");
 		
 		nameTxtFld = new JTextField();
+		nameTxtFld.setText("My Custom List");
 		add(nameTxtFld, "cell 2 1 4 1,growx");
 		nameTxtFld.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Availability");
-		add(lblNewLabel, "cell 1 3 2 1");
+		JLabel lblNewLabel = new JLabel("Maximum Time Commitment");
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 18));
+		add(lblNewLabel, "cell 2 3 4 1,aligny bottom");
 		
 		JLabel daysPerWeekLbl = new JLabel("# Days Per Week:");
 		add(daysPerWeekLbl, "cell 2 4,alignx right");
 		
 		daysPerWeekTxtFld = new JTextField();
+		daysPerWeekTxtFld.setText("5");
 		add(daysPerWeekTxtFld, "cell 3 4 3 1,growx");
 		daysPerWeekTxtFld.setColumns(10);
 		
@@ -42,6 +47,7 @@ public class ListForm extends JPanel {
 		add(hoursPerDayLbl, "cell 2 5,alignx right");
 		
 		hoursPerDayTxtFld = new JTextField();
+		hoursPerDayTxtFld.setText("8");
 		add(hoursPerDayTxtFld, "cell 3 5 3 1,growx");
 		hoursPerDayTxtFld.setColumns(10);
 		

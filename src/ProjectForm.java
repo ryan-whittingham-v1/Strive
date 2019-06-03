@@ -26,6 +26,7 @@ public class ProjectForm extends JPanel {
 		add(nameLbl, "cell 1 1,alignx right");
 		
 		nameTxtFld = new JTextField();
+		nameTxtFld.setText("My Custom Project");
 		add(nameTxtFld, "cell 2 1 4 1,growx");
 		nameTxtFld.setColumns(10);
 		
@@ -40,6 +41,7 @@ public class ProjectForm extends JPanel {
 		add(durationLbl, "cell 2 4,alignx right");
 		
 		durationTxtFld = new JTextField();
+		durationTxtFld.setText("4");
 		add(durationTxtFld, "cell 3 4 3 1,growx");
 		durationTxtFld.setColumns(10);
 		
@@ -64,6 +66,7 @@ public class ProjectForm extends JPanel {
 		});
 		
 		dueDateTxtFld = new JTextField();
+		dueDateTxtFld.setText("06/05/2019");
 		add(dueDateTxtFld, "cell 3 5 3 1,growx");
 		dueDateTxtFld.setColumns(10);
 		add(btnAddProject, "cell 4 7 3 1,alignx center");

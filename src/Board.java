@@ -24,12 +24,13 @@ public class Board extends JPanel{
 		add(lblStrive, "cell 0 0,aligny top");
 		
 		// Project list Scroll pane
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 0 1 2 1,grow");
+		//JScrollPane scrollPane = new JScrollPane();
+		//add(scrollPane, "cell 0 1 2 1,grow");
 		scrollWindow = new JPanel();
-		scrollPane.setViewportView(scrollWindow);
-		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		//scrollPane.setViewportView(scrollWindow);
 		scrollWindow.setLayout(new MigLayout("", "[grow]", "[grow]"));
+		add(scrollWindow, "cell 0 1 2 1,grow");
+
 		
 		// Create List Panel, will be added and removed to projectBoard
 		createList = new ListForm();
