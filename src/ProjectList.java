@@ -74,9 +74,9 @@ public class ProjectList extends JPanel {
 		add(nameLbl, "cell 1 1 2 1");
 		
 		// Availablity Header
-		lblAvailability = new JLabel("Time Available");
+		lblAvailability = new JLabel("Work Rate:");
 		lblAvailability.setFont(new Font("Dialog", Font.BOLD, 22));
-		add(lblAvailability, "cell 1 2 2 1,alignx left,aligny bottom");
+		add(lblAvailability, "cell 1 2,alignx right,aligny bottom");
 		
 		// Scrollpane for the list
 		JScrollPane scrollPane = new JScrollPane();
@@ -127,7 +127,7 @@ public class ProjectList extends JPanel {
 		});
 		
 		// Update schedule status button
-		btnUpdateScheduleStatus = new JButton("Update Status");
+		btnUpdateScheduleStatus = new JButton("Calculate Capacity");
 		btnUpdateScheduleStatus.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

@@ -239,22 +239,20 @@ public class ProjectCard extends JPanel {
 		// Calculate if time available to meet duedate
 			public String calculateTimeAvailability() {
 				String response = "";
-				int remainingDaysTillDue;
 				
 				// Get total hours till duedate
 				int totalHoursTillDue = timer.getHoursTillDue();
 				
 				// Calculate how many weeks till due date
 				int weeksTillDue = totalHoursTillDue / 168;
-				if (weeksTillDue != 0) { // More then a week till due date
-					remainingDaysTillDue = (totalHoursTillDue%weeksTillDue) / 24; // Calculate remaining days 
-				}
-				else {
-					remainingDaysTillDue = totalHoursTillDue / 24; // less than a week, calc days
-				}
-				
-				int remainingHoursTillDue = totalHoursTillDue - (weeksTillDue * 168) - // Calc remaining hours
-						(remainingDaysTillDue * 24);
+				// Update total Hours
+				totalHoursTillDue = totalHoursTillDue - weeksTillDue * 168;
+				// Calculate how many remaining days till due date
+				int remainingDaysTillDue = totalHoursTillDue / 24;
+				// Update total Hours
+				totalHoursTillDue = totalHoursTillDue - remainingDaysTillDue * 24;
+				// Calculate how many remaining hours till due date
+				int remainingHoursTillDue = totalHoursTillDue;
 				
 				// Calculate available work hours till due date using list time commitment settings 				
 				int workTimeAvailable = weeksTillDue * parentList.getHoursPerWeek() + (remainingDaysTillDue 

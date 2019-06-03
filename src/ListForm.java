@@ -31,7 +31,7 @@ public class ListForm extends JPanel {
 		add(nameTxtFld, "cell 2 1 4 1,growx");
 		nameTxtFld.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Maximum Time Commitment");
+		JLabel lblNewLabel = new JLabel("Available Work Rate");
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 18));
 		add(lblNewLabel, "cell 2 3 4 1,aligny bottom");
 		
